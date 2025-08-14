@@ -83,3 +83,31 @@ function ServerCmdSetGenre(%client, %genre)
     %client.Player.setGenre(%genre);
     return ;
 }
+
+function serverCmdTeleportToPlayer(%client, %targetName)
+{
+    if (!isObject(%client.Player))
+    {
+        error("serverCmdTeleportToPlayer: null client player" SPC getDebugString(%client));
+        return ;
+    }
+    %target = PlayerDict.getNorm(%targetName);
+    if (!isObject(%target))
+    {
+        %target = PlayerDict.getNorm(rentabot_makeRentabotName(%targetName));
+    }
+    if (!isObject(%target))
+    {
+        messageClient(%client, 'MsgInfoMessage', 'Invalid teleport target.');
+        return ;
+    }
+    if (%client.Player == %target)
+    {
+        messageClient(%client, 'MsgInfoMessage', 'Cannot teleport to yourself.');
+        return ;
+    }
+    %client.Player.setTransform(%target.getTransform());
+    %client.Player.setVelocity("0 0 0");
+    messageClient(%client, 'MsgInfoMessage', 'Teleported to' SPC %target.getShapeName() @ '.');
+    return ;
+}

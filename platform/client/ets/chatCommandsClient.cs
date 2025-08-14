@@ -92,6 +92,7 @@ function initCommandMap()
     commandMapAdd("sos", "sosOperation");
     commandMapAdd(911, "sosOperation");
     commandMapAdd("summon", "summonOperation");
+    commandMapAdd("loadcached", "loadCachedMissionOperation");
     commandMapAdd("talk", "plainSayOperation");
     commandMapAdd("teleport", "teleportOperation");
     commandMapAddAbbreviation("teleport", "tele");
@@ -340,6 +341,12 @@ function teleportOperation(%playerName)
     }
     return ;
 }
+
+function loadCachedMissionOperation(%missionName)
+{
+    loadCachedMission(%missionName);
+    return ;
+}
 function clientCmdRequestCode(%title, %message)
 {
     MessageBoxTextEntry(%title, %message, "enterCodeOperation", "");
@@ -540,8 +547,7 @@ function doUserFavorite(%playerName, %op)
 }
 function doUserTeleportTo(%playerName)
 {
-    %vurl = "vside:/user/" @ %playerName;
-    vurlOperation(%vurl);
+    commandToServer('TeleportToPlayer', %playerName);
     return ;
 }
 function doUserFlyTo(%playerName)
