@@ -150,6 +150,25 @@ function startStandAlone_Part2()
     log("initialization", "info", "end connectLocal()");
     return ;
 }
+
+function loadCachedMission(%mission)
+{
+    %file = %mission;
+    if (!isFile(%file))
+    {
+        %file = "projects/vside/worlds/" @ %mission @ "/missions/" @ %mission @ ".mis.dbf";
+    }
+    if (!isFile(%file))
+    {
+        error("loadCachedMission: missing file" SPC %file);
+        return ;
+    }
+    $MissionArg = %file;
+    $CacheFlagIsSet = 1;
+    $StandAlone = 1;
+    startStandAlone();
+    return ;
+}
 function join(%joinGameAddress)
 {
     loadMainMenu();
